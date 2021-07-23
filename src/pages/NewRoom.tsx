@@ -9,7 +9,8 @@ import { useState } from 'react';
 
 export function NewRoom() {
 	// const {user} = useAuth()
-	const [ newRoom, SetNewRoom ] = useState();
+	const [ newRoom, SetNewRoom ] = useState('');
+	console.log(newRoom)
 
 	async function hadleCreateRoom(event: FormEvent) {
 		event.preventDefault();
@@ -26,7 +27,12 @@ export function NewRoom() {
 					<img src={logoImg} alt="logo letmeask" />
 					<h2>Crie uma nova Sala</h2>
 					<form onSubmit={hadleCreateRoom}>
-						<input type="text" placeholder="Nome da Sala" />
+						<input 
+							type="text" 
+							onChange={event => SetNewRoom(event.target.value)}
+							value={newRoom}
+							placeholder="Nome da Sala" 
+							/>
 						<Button type="submit">Criar sala</Button>
 					</form>
 					<p>
