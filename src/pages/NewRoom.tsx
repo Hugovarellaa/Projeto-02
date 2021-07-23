@@ -6,6 +6,7 @@ import logoImg from '../assets/images/logo.svg';
 import '../styles/auth.scss';
 import { FormEvent } from 'react';
 import { useState } from 'react';
+import { database } from '../services/firebase';
 
 export function NewRoom() {
 	// const {user} = useAuth()
@@ -14,6 +15,11 @@ export function NewRoom() {
 
 	async function hadleCreateRoom(event: FormEvent) {
 		event.preventDefault();
+
+		if(newRoom.trim() === ''){
+			return;
+		}
+		const roomRef = database.ref('rooms');
 	}
 	return (
 		<div id="page-auth">
