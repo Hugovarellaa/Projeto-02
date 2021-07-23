@@ -11,21 +11,20 @@ import { database } from '../services/firebase';
 export function NewRoom() {
 	const {user} = useAuth()
 	const [ newRoom, SetNewRoom ] = useState('');
-	console.log(newRoom)
 
 	async function hadleCreateRoom(event: FormEvent) {
 		event.preventDefault();
-
+		
 		if(newRoom.trim() === ''){
 			return;
 		}
 		const roomRef = database.ref('rooms');
+
 		const firebaseRoom = await roomRef.push({
 			title: newRoom,
-			authorId: user?.id,
-
+			authorId: user?.id
 		})
-		
+
 	}
 	return (
 		<div id="page-auth">
