@@ -5,10 +5,13 @@ import { Button } from '../components/Button';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import '../styles/auth.scss';
+import { FormEvent, useState } from 'react';
+import { database } from '../services/firebase';
 
 export function Home() {
 	const history = useHistory();
 	const {signInWithGoogle, user} = useAuth()
+	const [roomCode , setRoomCode] = useState('')
 
 	async function handleCreateRoom() {
 		if(!user){
@@ -16,6 +19,20 @@ export function Home() {
 		}
 
 		history.push('/rooms/new');
+	}
+	async function hadleJoinRoom(event : FormEvent){
+		event.preventDefault()
+
+		if(roomCode.trim() === ''){
+			return;
+		}
+		const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+		if(!roomRef.exists()){
+			alert(`Room dos not exists.`);
+			return;
+		}
+		history.push(`/rooms/${roomCode}`)
 	}
 
 	return (
@@ -35,8 +52,13 @@ export function Home() {
 					</button>
 
 					<div className="separator">ou entre em uma sala</div>
-					<form>
-						<input type="text" placeholder="Digite o Codigo da sala" />
+					<form onSubmit={hadleJoinRoom}>
+						<input 
+							type="text" 
+							placeholder="Digite o Codigo da sala" 
+							onChange={event => setRoomCode(event.target.value)}
+							value={roomCode}
+							/>
 						<Button type="submit">Entra na sala</Button>
 					</form>
 				</div>
