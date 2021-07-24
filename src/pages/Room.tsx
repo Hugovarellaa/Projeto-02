@@ -1,4 +1,6 @@
-import logoImg from '../assets/images/logo.svg'
+import logoImg from '../assets/images/logo.svg';
+import { Button } from '../components/Button';
+import '../styles/room.scss';
 
 export function Room() {
 	return (
@@ -16,9 +18,15 @@ export function Room() {
 				</div>
 
 				<form>
-					<textarea />
+					<textarea placeholder="O que Voce quer Perguntar?" />
+					<div className="form-footer">
+						<span>
+							Para enviar uma pergunta,<button> faca seu login</button>.
+						</span>
+						<Button type="submit">Enviar pergunta</Button>
+					</div>
 				</form>
 			</main>
 		</div>
-	)
+	);
 }
