@@ -19,7 +19,7 @@ export function Room() {
 
 	async function handleSendQuestion(event : FormEvent) {
 		event.preventDefault()
-		
+
 		if (newQuestion.trim() === '') {
 			return;
 		}
@@ -63,7 +63,7 @@ export function Room() {
 						<span>
 							Para enviar uma pergunta, <button> faca seu login</button>.
 						</span>
-						<Button type="submit">Enviar pergunta</Button>
+						<Button type="submit" disabled={!user}>Enviar pergunta</Button>
 					</div>
 				</form>
 			</main>
