@@ -17,8 +17,8 @@ export function Room() {
 	const [ newQuestion, setNewQuestion ] = useState('');
 	const roomId = params.id;
 
-	async function handleSendQuestion(event : FormEvent) {
-		event.preventDefault()
+	async function handleSendQuestion(event: FormEvent) {
+		event.preventDefault();
 
 		if (newQuestion.trim() === '') {
 			return;
@@ -30,13 +30,15 @@ export function Room() {
 			content: newQuestion,
 			author: {
 				name: user.name,
-				avatar: user.avatar,
+				avatar: user.avatar
 			},
 			isHighLighted: false,
 			isAnswered: false
 		};
 
-		await database.ref(`rooms/${roomId}/questions`).push(question)
+		await database.ref(`rooms/${roomId}/questions`).push(question);
+
+		setNewQuestion('');
 	}
 
 	return (
@@ -60,10 +62,20 @@ export function Room() {
 						value={newQuestion}
 					/>
 					<div className="form-footer">
-						<span>
-							Para enviar uma pergunta, <button> faca seu login</button>.
-						</span>
-						<Button type="submit" disabled={!user}>Enviar pergunta</Button>
+						{user 
+						? (
+							<div className="user-info">
+									<img src={user.avatar} alt={user.name} />
+									<span>{user.name}</span>
+							</div>
+						) : (
+							<span>
+								Para enviar uma pergunta, <button> faca seu login</button>.
+							</span>
+						)}
+						<Button type="submit" disabled={!user}>
+							Enviar pergunta
+						</Button>
 					</div>
 				</form>
 			</main>
