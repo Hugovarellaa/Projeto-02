@@ -3,65 +3,24 @@ import { Button } from '../components/Button';
 import { RoomCode } from '../components/RoomCode';
 import '../styles/room.scss';
 import { useParams } from 'react-router-dom';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { database } from '../services/firebase';
+import { Question } from '../components/Question';
+import { useRoom } from '../hooks/useRoom';
 
 
-type FirebaseQuestions = Record<string, {
-	author: {
-		name: string,
-		avatar: string,
-	}
-	content: string,
-	isAnswered: boolean,
-	isHighLighted: boolean,
-}>
 interface RoomParams {
 	id: string;
 }
-interface Questions {
-	id: string;
-	author: {
-		name: string,
-		avatar: string,
-	}
-	content: string,
-	isAnswered: boolean,
-	isHighLighted: boolean,
-}
+
 
 export function Room() {
 	const { user } = useAuth();
 	const params = useParams<RoomParams>();
 	const [ newQuestion, setNewQuestion ] = useState('');
-	const [questions, SetQuestions] = useState<Questions[]>([])
-	const [title, setTitle] = useState('')
-
 	const roomId = params.id;
-
-	useEffect(()=>{
-		console.log(roomId)
-	
-		const roomRef = database.ref(`rooms/${roomId}`)
-
-		roomRef.on('value' , room => {
-			const databaseRoom = room.val();
-			const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
-
-			const parsedQuestions = Object.entries(FirebaseQuestions ).map(([key, value]) => {
-				return {
-					id: key,
-					content: value.content,
-					author: value.author,
-					isHighLighted: value.isHighLighted,
-					isAnswered: value.isAnswered,
-				}
-			})
-			setTitle(databaseRoom.title);
-			SetQuestions(parsedQuestions)
-		})
-	},[roomId])
+	const {title, questions} = useRoom(roomId)
 
 	async function handleSendQuestion(event: FormEvent) {
 		event.preventDefault();
@@ -100,7 +59,6 @@ export function Room() {
 					<h1>Sala {title}</h1>
 					{ questions.length > 0 && <span>{questions.length} perguntas</span>}
 				</div>
-
 				<form onSubmit={handleSendQuestion}>
 					<textarea
 						placeholder="O que Voce quer Perguntar?"
@@ -124,8 +82,16 @@ export function Room() {
 						</Button>
 					</div>
 				</form>
-				{JSON.stringify(questions)}
-
+				<div className="question-list">
+				{questions.map(question => {
+					return (
+						<Question
+							key={question.id}
+							content={question.content}
+							author={question.author}
+						/>
+					)
+				})}	</div>		
 			</main>
 		</div>
 	);
