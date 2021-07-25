@@ -3,7 +3,7 @@ import { Button } from '../components/Button';
 import { RoomCode } from '../components/RoomCode';
 import '../styles/room.scss';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { database } from '../services/firebase';
 
@@ -17,7 +17,9 @@ export function Room() {
 	const [ newQuestion, setNewQuestion ] = useState('');
 	const roomId = params.id;
 
-	async function handleSendQuestion() {
+	async function handleSendQuestion(event : FormEvent) {
+		event.preventDefault()
+		
 		if (newQuestion.trim() === '') {
 			return;
 		}
@@ -34,7 +36,7 @@ export function Room() {
 			isAnswered: false
 		};
 
-		await database.ref(`rooms/${roomId}/questions`)
+		await database.ref(`rooms/${roomId}/questions`).push(question)
 	}
 
 	return (
@@ -51,7 +53,7 @@ export function Room() {
 					<span>4 perguntas</span>
 				</div>
 
-				<form>
+				<form onSubmit={handleSendQuestion}>
 					<textarea
 						placeholder="O que Voce quer Perguntar?"
 						onChange={(event) => setNewQuestion(event.target.value)}
