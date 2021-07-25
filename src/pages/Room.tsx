@@ -20,11 +20,24 @@ type FirebaseQuestions = Record<string, {
 interface RoomParams {
 	id: string;
 }
+interface Questions {
+	id: string;
+	author: {
+		name: string,
+		avatar: string,
+	}
+	content: string,
+	isAnswered: boolean,
+	isHighLighted: boolean,
+}
 
 export function Room() {
 	const { user } = useAuth();
 	const params = useParams<RoomParams>();
 	const [ newQuestion, setNewQuestion ] = useState('');
+	const [questions, SetQuestions] = useState<Questions[]>([])
+	const [title, setTitle] = useState('')
+
 	const roomId = params.id;
 
 	useEffect(()=>{
@@ -32,7 +45,7 @@ export function Room() {
 	
 		const roomRef = database.ref(`rooms/${roomId}`)
 
-		roomRef.once('value' , room => {
+		roomRef.on('value' , room => {
 			const databaseRoom = room.val();
 			const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
 
@@ -45,7 +58,8 @@ export function Room() {
 					isAnswered: value.isAnswered,
 				}
 			})
-			console.log(parsedQuestions)
+			setTitle(databaseRoom.title);
+			SetQuestions(parsedQuestions)
 		})
 	},[roomId])
 
@@ -83,8 +97,8 @@ export function Room() {
 			</header>
 			<main>
 				<div className="room-title">
-					<h1>Sala React</h1>
-					<span>4 perguntas</span>
+					<h1>Sala {title}</h1>
+					{ questions.length > 0 && <span>{questions.length} perguntas</span>}
 				</div>
 
 				<form onSubmit={handleSendQuestion}>
@@ -110,6 +124,8 @@ export function Room() {
 						</Button>
 					</div>
 				</form>
+				{JSON.stringify(questions)}
+
 			</main>
 		</div>
 	);
