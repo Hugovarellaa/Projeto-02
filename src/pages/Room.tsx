@@ -3,10 +3,20 @@ import { Button } from '../components/Button';
 import { RoomCode } from '../components/RoomCode';
 import '../styles/room.scss';
 import { useParams } from 'react-router-dom';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { database } from '../services/firebase';
 
+
+type FirebaseQuestions = Record<string, {
+	author: {
+		name: string,
+		avatar: string,
+	}
+	content: string,
+	isAnswered: boolean,
+	isHighLighted: boolean,
+}>
 interface RoomParams {
 	id: string;
 }
@@ -16,6 +26,28 @@ export function Room() {
 	const params = useParams<RoomParams>();
 	const [ newQuestion, setNewQuestion ] = useState('');
 	const roomId = params.id;
+
+	useEffect(()=>{
+		console.log(roomId)
+	
+		const roomRef = database.ref(`rooms/${roomId}`)
+
+		roomRef.once('value' , room => {
+			const databaseRoom = room.val();
+			const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
+
+			const parsedQuestions = Object.entries(FirebaseQuestions ).map(([key, value]) => {
+				return {
+					id: key,
+					content: value.content,
+					author: value.author,
+					isHighLighted: value.isHighLighted,
+					isAnswered: value.isAnswered,
+				}
+			})
+			console.log(parsedQuestions)
+		})
+	},[roomId])
 
 	async function handleSendQuestion(event: FormEvent) {
 		event.preventDefault();
