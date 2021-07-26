@@ -11,7 +11,7 @@ import { database } from '../services/firebase';
 export function Home() {
 	const history = useHistory();
 	const { signInWithGoogle, user } = useAuth();
-	const [ roomCode, setRoomCode ] = useState('');
+	const [roomCode, setRoomCode] = useState('');
 
 	async function handleCreateRoom() {
 		if (!user) {
@@ -32,7 +32,7 @@ export function Home() {
 			alert(`Room dos not exists.`);
 			return;
 		}
-		if(roomRef.val().endedAt){
+		if (roomRef.val().endedAt) {
 			alert('Room already closed.')
 			return;
 		}

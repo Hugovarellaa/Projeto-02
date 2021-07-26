@@ -25,7 +25,7 @@ interface QuestionsProps {
 	isHighLighted: boolean,
 	likeCount: number,
 	likeId: string | undefined,
-	
+
 }
 
 
@@ -52,14 +52,14 @@ export function useRoom(roomId: string) {
 					isHighLighted: value.isHighLighted,
 					isAnswered: value.isAnswered,
 					likeCount: Object.values(value.likes ?? {}).length,
-					likeId: Object.entries(value.likes ?? {}).find( ([key, like]) => like.authorId === user?.id )?.[0],
+					likeId: Object.entries(value.likes ?? {}).find(([key, like]) => like.authorId === user?.id)?.[0],
 				}
 			})
 			setTitle(databaseRoom.title);
 			SetQuestions(parsedQuestions)
 		})
 
-		return ()=>{
+		return () => {
 			roomRef.off(`value`);
 		}
 

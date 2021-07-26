@@ -9,13 +9,13 @@ import { database } from '../services/firebase';
 import '../styles/auth.scss';
 
 export function NewRoom() {
-	const {user} = useAuth()
-	const [ newRoom, SetNewRoom ] = useState('');
+	const { user } = useAuth()
+	const [newRoom, SetNewRoom] = useState('');
 	const history = useHistory()
 	async function hadleCreateRoom(event: FormEvent) {
 		event.preventDefault();
-		
-		if(newRoom.trim() === ''){
+
+		if (newRoom.trim() === '') {
 			return;
 		}
 		const roomRef = database.ref('rooms');
@@ -38,12 +38,12 @@ export function NewRoom() {
 					<img src={logoImg} alt="logo letmeask" />
 					<h2>Crie uma nova Sala</h2>
 					<form onSubmit={hadleCreateRoom}>
-						<input 
-							type="text" 
+						<input
+							type="text"
 							onChange={event => SetNewRoom(event.target.value)}
 							value={newRoom}
-							placeholder="Nome da Sala" 
-							/>
+							placeholder="Nome da Sala"
+						/>
 						<Button type="submit">Criar sala</Button>
 					</form>
 					<p>
