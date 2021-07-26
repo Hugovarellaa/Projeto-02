@@ -4,9 +4,9 @@
 
 <p align="center">
   
-  <img src='./src/assets/HomePage.png'  width="620px"/>
-  <img src='./src/assets/HomePageSecond.png'width="620px"/>
-  <img src='./src/assets/4.png'  width="620px"/>
+  <img src='./src/assets/HomePage.png'  width="720px"/>
+  <img src='./src/assets/HomePageSecond.png'width="720px"/>
+  <img src='./src/assets/4.png'  width="720px"/>
   
   
 </p>
