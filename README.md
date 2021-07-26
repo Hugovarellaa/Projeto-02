@@ -3,14 +3,12 @@
 </p>
 
 <p align="center">
-  <div display="flex" alignItens="center">
+  
   <img src='./src/assets/HomePage.png'  width="620px"/>
   <img src='./src/assets/HomePageSecond.png'width="620px"/>
-  </div>
-  <div display="flex" alignItens="center">
   <img src='./src/assets/4.png'  width="620px"/>
-  <img src='./src/assets/5.png'width="630px"/>
-  </div>
+  
+  
 </p>
 
 
